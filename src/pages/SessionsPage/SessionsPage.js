@@ -3,11 +3,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-export default function SessionsPage() {
+export default function SessionsPage(props) {
 
     const { idFilme } = useParams();
     const [sessoes, setSessoes] = useState({days: []});
-    
+
+
     useEffect(() => {axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`).then(
         (res) => {setSessoes(res.data)}
     )}, []);
@@ -22,7 +23,7 @@ export default function SessionsPage() {
 
                 {
                         sessoes.days.map(
-                            (day) => <SessionContainer>
+                            (day) => <SessionContainer data-test="movie-day">
                                 {day.weekday} - {day.date}
                                 <ButtonsContainer>
                                     {day.showtimes.map(
@@ -35,7 +36,7 @@ export default function SessionsPage() {
                 
             </div>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={sessoes.posterURL} alt="poster" />
                 </div>

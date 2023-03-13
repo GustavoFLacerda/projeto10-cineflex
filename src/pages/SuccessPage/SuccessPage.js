@@ -9,29 +9,33 @@ export default function SuccessPage(props) {
         navigate("/")
     }
 
+
+    let ordered = [...props.sucesso.seats];
+    ordered.sort((a,b) => a - b);
+
     return (
         <PageContainer>
             <h1>Pedido feito <br /> com sucesso!</h1>
 
-            <TextContainer>
+            <TextContainer data-test="movie-info">
                 <strong><p>Filme e sessão</p></strong>
                 <p>{props.sucesso.movie.title}</p>
                 <p>{props.sucesso.day.date} - {props.sucesso.day.hour}</p>
             </TextContainer>
 
-            <TextContainer>
+            <TextContainer data-test="seats-info">
                 <strong><p>Ingressos</p></strong>
-                {props.sucesso.seats.map(
+                {ordered.map(
                     (s) => <p>Assento {s}</p>
                 )}
             </TextContainer>
 
-            <TextContainer>
+            <TextContainer data-test="client-info">
                 <strong><p>Comprador</p></strong>
                 <p>Nome: {props.sucesso.name}</p>
                 <p>CPF: {props.sucesso.cpf}</p>
             </TextContainer>
-            <button onClick={home}>Voltar para Home</button>
+            <button data-test="go-home-btn "onClick={home}>Voltar para Home</button>
         </PageContainer>
     )
 }

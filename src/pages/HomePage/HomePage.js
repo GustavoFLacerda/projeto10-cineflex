@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function HomePage() {
+export default function HomePage(props) {
 
     const [filmes, setFilmes] = useState([]);
 
@@ -20,31 +20,12 @@ export default function HomePage() {
             <ListContainer>
             {
                 filmes.map(
-                    (f) => <MovieContainer to={`/sessoes/${f.id}`}>
+                    (f) => <MovieContainer data-test="movie" to={`/sessoes/${f.id}`}>
                         <img src={f.posterURL} />
                     </MovieContainer>
                 )
             }
             </ListContainer>
-
-            <ListContainer>
-                <MovieContainer>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster"/>
-                </MovieContainer>
-
-                <MovieContainer>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster"/>
-                </MovieContainer>
-
-                <MovieContainer>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster"/>
-                </MovieContainer>
-
-                <MovieContainer>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster"/>
-                </MovieContainer>
-            </ListContainer>
-
         </PageContainer>
     )
 }
@@ -61,23 +42,26 @@ const PageContainer = styled.div`
     padding-top: 70px;
 `
 const ListContainer = styled.div`
-    width: 330px;
+    width: 320px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    padding: 10px;
+    gap: 30px;
+    margin-top: 60px;
 `
 const MovieContainer = styled(Link)`
     width: 145px;
+    box-sizing: border-box;
     height: 210px;
     box-shadow: 0px 2px 4px 2px #0000001A;
     border-radius: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px;
     img {
         width: 130px;
         height: 190px;
     }
+    background: white;
+    padding: 8px;
 `

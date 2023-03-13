@@ -80,30 +80,30 @@ export default function SeatsPage(props) {
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle color="selecionado" border="#0E7D71"/>
                     Selecionado
                 </CaptionItem>
-                <CaptionItem>
-                    <CaptionCircle />
+                <CaptionItem >
+                    <CaptionCircle color="disponivel" border="#7B8B99" />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle color={"#FBE192"} border={"#F7C52B"} />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
 
             <FormContainer onSubmit={reservarassentos}>
                 Nome do Comprador:
-                <input onChange={controlarformulario} name="name" placeholder="Digite seu nome..." />
+                <input onChange={controlarformulario} data-test="client-name" name="name" placeholder="Digite seu nome..." />
 
                 CPF do Comprador:
-                <input onChange={controlarformulario} name="cpf" placeholder="Digite seu CPF..." />
+                <input onChange={controlarformulario} data-test="client-cpf" name="cpf" placeholder="Digite seu CPF..." />
 
-                <button>Reservar Assento(s)</button>
+                <button data-test="book-seat-btn">Reservar Assento(s)</button>
             </FormContainer>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={assentos.movie.posterURL} alt="poster" />
                 </div>
@@ -160,8 +160,8 @@ const CaptionContainer = styled.div`
     margin: 20px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: ${props => props.border} 1px solid;           // Essa cor deve mudar
+    background-color: ${props => props.color === "selecionado"? "#1AAE9E" : (props.color === "disponivel" ? "#C3CFD9" : "#FBE192")};   // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -216,7 +216,7 @@ const SeatItem = (props) => {
      }
 
     return(
-        <SeatItem2
+        <SeatItem2 data-test="seat"
         onClick={controlarassento} 
         isAvailable={props.isAvailable} 
         id={props.id}
