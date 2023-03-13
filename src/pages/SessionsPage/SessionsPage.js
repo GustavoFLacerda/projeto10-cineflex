@@ -27,7 +27,7 @@ export default function SessionsPage(props) {
                                 {day.weekday} - {day.date}
                                 <ButtonsContainer>
                                     {day.showtimes.map(
-                                        (showtime) => <Link to={`/assentos/${showtime.id}`}>{showtime.name}</Link>
+                                        (showtime) => <Link data-test="showtime" to={`/assentos/${showtime.id}`}>{showtime.name}</Link>
                                     )}
                                 </ButtonsContainer>
                             </SessionContainer> 
