@@ -7,6 +7,7 @@ export default function SeatsPage(props) {
 
   const [assentos, setAssentos] = useState({seats: [], movie:{title: "", posterURL: ""}, day:{weekday: "", date:""}});
   const [selecionados, setSelecionados ] = useState([]);
+  const [selecionados2, setSelecionados2 ] = useState([]);
   const { idSessao } = useParams();
   const [form, setForm] = useState({name: "", cpf: ""});
   const navigate = useNavigate();
@@ -18,23 +19,40 @@ export default function SeatsPage(props) {
             )
    }, [])
 
+   useEffect(
+    () => {console.log(form)}
+   , [form])
+
    function controlarformulario(e){
-       let newobj = form;
+       let newobj = {...form};
        newobj[e.target.name] = e.target.value;
-       setForm([...newobj])
+       setForm({...newobj})
    }
 
    function reservarassentos(e){
     e.preventDefault();
     if(selecionados.length > 0){
-        let enviar={...form, ids: selecionados}
+        let enviar={...form, ids: [...selecionados]}
         console.log(enviar);
         axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many", enviar)
         .then(
-            (res) => {navigate("/sucesso")}
+            (res) => {
+                let newobj = {};
+                newobj.day = {};
+                newobj.day.hour = assentos.name;
+                newobj.day.date = assentos.day.date;
+                newobj.movie = {};
+                newobj.movie.title = assentos.movie.title;
+                newobj.name = form.name;
+                newobj.cpf = form.cpf;
+                newobj.seats = [...selecionados2];
+                console.log(newobj)
+                props.setSucesso({...newobj});
+                navigate("/sucesso");
+            }
         )
         .catch(
-            () => {console.log("Error")}
+            (err) => {console.log(err)}
         )
         
     }
@@ -54,6 +72,8 @@ export default function SeatsPage(props) {
                     isAvailable={assento.isAvailable}   
                     name={assento.name}
                     id={assento.id}
+                    selecionados2={selecionados2}
+                    setSelecionados2={setSelecionados2}
                     />
                 )}
             </SeatsContainer>
@@ -75,10 +95,10 @@ export default function SeatsPage(props) {
 
             <FormContainer onSubmit={reservarassentos}>
                 Nome do Comprador:
-                <input onClick={controlarformulario} name="name" placeholder="Digite seu nome..." />
+                <input onChange={controlarformulario} name="name" placeholder="Digite seu nome..." />
 
                 CPF do Comprador:
-                <input onClick={controlarformulario} name="cpf" placeholder="Digite seu CPF..." />
+                <input onChange={controlarformulario} name="cpf" placeholder="Digite seu CPF..." />
 
                 <button>Reservar Assento(s)</button>
             </FormContainer>
@@ -157,7 +177,7 @@ const CaptionItem = styled.div`
     font-size: 12px;
 `
 const SeatItem2 = styled.div`
-    border: 1px solid ${"blue"};         // Essa cor deve mudar
+    border: 1px solid ${props => !(props.isAvailable) ? "#F7C52B" :(props.selecionados.includes(props.id) ? "#0E7D71" : "#7B8B99")};         // Essa cor deve mudar
     background-color: ${props => !(props.isAvailable) ? "#FBE192" :(props.selecionados.includes(props.id) ? "#1AAE9E" : "#C3CFD9")};    // Essa cor deve mudar
     height: 25px;
     width: 25px;
@@ -179,11 +199,16 @@ const SeatItem = (props) => {
             if(props.selecionados.includes(props.id)){
                 let filtrado = props.selecionados.filter(s => !(s === props.id));
                 props.setSelecionados([...filtrado]);
+                let filtrado2 = props.selecionados2.filter(s => !(s === props.name));
+                props.setSelecionados2([...filtrado2]);
                 console.log(filtrado);
+                console.log(filtrado2)
               }
               else{
-                props.setSelecionados([...props.selecionados, props.id])
+                props.setSelecionados([...props.selecionados, props.id]);
+                props.setSelecionados2([...props.selecionados2, props.name])
                 console.log([...props.selecionados, props.id])
+                console.log([...props.selecionados2, props.name])
                 
               }
         }
@@ -196,6 +221,9 @@ const SeatItem = (props) => {
         isAvailable={props.isAvailable} 
         id={props.id}
         selecionados={props.selecionados}
+        selecionados2={props.selecionados2}
+        setSelecionados2={props.setSelecionados2}
+        name={props.name}
         >
             {props.name}
         </SeatItem2>

@@ -4,11 +4,12 @@ import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react"
 
 
 export default function App() {
 
-    const [sucesso, setSucesso] = useState({movie:{title: ""}, day:{weekday: "", date: ""}, name: "", cpf: "", seats:[]})
+    const [sucesso, setSucesso] = useState({movie:{title: ""}, day:{hour: "", date: ""}, name: "", cpf: "", seats:[]})
 
     return (
          <>
